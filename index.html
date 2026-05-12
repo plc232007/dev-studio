@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dev Studio — Pequenos Negócios</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DEV<span>.</span>STUDIO</div>
+  <div class="nav-links">
+    <a href="#servicos">Serviços</a>
+    <a href="#cases">Cases</a>
+    <a href="#processo">Processo</a>
+    <a href="#precos">Preços</a>
+    <a href="#contato">Contato</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:1.5rem;">
+    <button id="theme-toggle" class="theme-toggle" aria-label="Alternar tema">
+      <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <a href="#contato" class="nav-cta">Falar comigo</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span></span> Disponível para novos projetos — 2025
+    </div>
+    <h1 class="hero-title">
+      <div>SEU NEGÓCIO</div>
+      <div class="outline">MERECE UM</div>
+      <div>SITE <span class="accent" id="typewriter">REAL.</span></div>
+    </h1>
+    <div class="hero-sub-row">
+      <div>
+        <p class="hero-sub">Desenvolvo soluções digitais para <em>pequenos negócios</em> que querem crescer de verdade. Do site que aparece no Google ao sistema que automatiza sua operação.</p>
+        <div class="hero-actions">
+          <a href="#cases" class="btn-main">Ver meu trabalho →</a>
+          <a href="#contato" class="btn-ghost">Orçamento grátis</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track" id="marquee"></div>
+</div>
+
+<!-- SERVIÇOS -->
+<section class="section reveal" id="servicos">
+  <div class="sec-tag">01 — Serviços</div>
+  <h2 class="sec-title">O QUE EU <span class="dim">FAÇO</span></h2>
+  <div class="services-grid">
+    <div class="svc glow-effect">
+      <div class="svc-num">001</div>
+      <div class="svc-icon">🌐</div>
+      <div class="svc-name">Sites & Landing Pages</div>
+      <div class="svc-desc">Site profissional que carrega rápido, aparece no Google e converte visitantes em clientes de verdade.</div>
+      <div class="svc-tech">HTML · CSS · WordPress · Webflow</div>
+    </div>
+    <div class="svc glow-effect">
+      <div class="svc-num">002</div>
+      <div class="svc-icon">🛒</div>
+      <div class="svc-name">Loja Virtual</div>
+      <div class="svc-desc">E-commerce completo com pagamento, estoque e integração com marketplaces. Venda 24h sem depender de ninguém.</div>
+      <div class="svc-tech">WooCommerce · Shopify · API Pix</div>
+    </div>
+    <div class="svc glow-effect">
+      <div class="svc-num">003</div>
+      <div class="svc-icon">⚙️</div>
+      <div class="svc-name">Sistemas Sob Medida</div>
+      <div class="svc-desc">Agendamentos, controle financeiro, pedidos — automatize o que toma seu tempo e foque no que importa.</div>
+      <div class="svc-tech">React · Node.js · PostgreSQL</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="section reveal bg-surface" id="cases">
+  <div class="sec-tag">02 — Cases</div>
+  <h2 class="sec-title">RESULTADOS <span class="dim">REAIS</span></h2>
+  <div class="cases-tabs">
+    <button class="case-tab active" data-target="case-0">🌿 Bistrô Verde</button>
+    <button class="case-tab" data-target="case-1">✂️ Studio Beleza</button>
+    <button class="case-tab" data-target="case-2">🏠 ImóvelFácil</button>
+  </div>
+
+  <div class="cases-display active" id="case-0">
+    <div class="case-info">
+      <div class="case-sector">Restaurante & Delivery — São Paulo, SP</div>
+      <div class="case-title">SISTEMA DE PEDIDOS + CARDÁPIO DIGITAL</div>
+      <p class="case-story">Restaurante familiar que vendia exclusivamente por WhatsApp, perdendo pedidos e sem nenhuma presença digital. Criamos site com cardápio interativo, sistema de pedidos online e integração com iFood.</p>
+      <div class="case-metrics">
+        <div class="metric"><div class="metric-val">+210%</div><div class="metric-label">Pedidos em 60 dias</div></div>
+        <div class="metric"><div class="metric-val">15d</div><div class="metric-label">Prazo de entrega</div></div>
+        <div class="metric"><div class="metric-val">R$1.8k</div><div class="metric-label">Investimento total</div></div>
+      </div>
+    </div>
+    
+    <div class="case-visual">
+      <img src="case-bistro.png" alt="Mockup do Sistema Completo Bistrô Verde" class="case-image">
+    </div>
+    </div>
+
+  <div class="cases-display" id="case-1">
+    <div class="case-info">
+      <div class="case-sector">Beleza & Estética — Rio de Janeiro, RJ</div>
+      <div class="case-title">AGENDAMENTO ONLINE + PÁGINA DE VENDAS</div>
+      <p class="case-story">Salão com agenda 100% por ligação, com alto índice de no-show. Desenvolvemos sistema de agendamento com confirmação automática via WhatsApp e página de vendas de pacotes.</p>
+      <div class="case-metrics">
+        <div class="metric"><div class="metric-val">-80%</div><div class="metric-label">No-show de clientes</div></div>
+        <div class="metric"><div class="metric-val">+95%</div><div class="metric-label">Agendamentos online</div></div>
+        <div class="metric"><div class="metric-val">R$2.2k</div><div class="metric-label">Investimento total</div></div>
+      </div>
+    </div>
+    
+    <div class="case-visual">
+      <img src="case-studio.png" alt="Mockup do Sistema Studio Beleza" class="case-image">
+    </div>
+    
+  </div>
+
+  <div class="cases-display" id="case-2">
+    <div class="case-info">
+      <div class="case-sector">Imobiliária — Belo Horizonte, MG</div>
+      <div class="case-title">PLATAFORMA DE IMÓVEIS + CRM DE LEADS</div>
+      <p class="case-story">Pequena imobiliária sem nenhuma presença digital, captando clientes apenas por indicação. Desenvolvemos plataforma com catálogo de imóveis, filtros e sistema de captação de leads integrado ao CRM.</p>
+      <div class="case-metrics">
+        <div class="metric"><div class="metric-val">3x</div><div class="metric-label">Mais leads/mês</div></div>
+        <div class="metric"><div class="metric-val">+180%</div><div class="metric-label">Alcance online</div></div>
+        <div class="metric"><div class="metric-val">R$4.5k</div><div class="metric-label">Investimento total</div></div>
+      </div>
+    </div>
+    
+    <!-- ÁREA DA IMAGEM ATUALIZADA -->
+    <div class="case-visual">
+      <img src="case-imoveis.png" alt="Mockup da Plataforma ImóvelFácil" class="case-image">
+    </div>
+    
+  </div>
+</section>
+
+<!-- PROCESSO -->
+<section class="section reveal" id="processo">
+  <div class="sec-tag">03 — Processo</div>
+  <h2 class="sec-title">COMO <span class="dim">FUNCIONA</span></h2>
+  <div class="process-list">
+    <div class="step glow-effect" id="step-0">
+      <div class="step-line"><div class="step-line-fill"></div></div>
+      <div class="step-n">01</div>
+      <div class="step-name">CONVERSA GRÁTIS</div>
+      <div class="step-desc">Entendo seu negócio, objetivos e o que você precisa. Sem compromisso, sem enrolação.</div>
+    </div>
+    <div class="step glow-effect" id="step-1">
+      <div class="step-line"><div class="step-line-fill"></div></div>
+      <div class="step-n">02</div>
+      <div class="step-name">PROPOSTA CLARA</div>
+      <div class="step-desc">Orçamento detalhado com prazo, escopo e preço fixo. Zero surpresas no final.</div>
+    </div>
+    <div class="step glow-effect" id="step-2">
+      <div class="step-line"><div class="step-line-fill"></div></div>
+      <div class="step-n">03</div>
+      <div class="step-name">DESENVOLVIMENTO</div>
+      <div class="step-desc">Atualizações semanais. Você acompanha tudo. Pode pedir ajustes a qualquer momento.</div>
+    </div>
+    <div class="step glow-effect" id="step-3">
+      <div class="step-line"><div class="step-line-fill"></div></div>
+      <div class="step-n">04</div>
+      <div class="step-name">ENTREGA + SUPORTE</div>
+      <div class="step-desc">Site no ar, treinamento incluso, 30 dias de suporte gratuito. Você não fica na mão.</div>
+    </div>
+  </div>
+</section>
+
+<!-- PREÇOS -->
+<section class="section reveal bg-surface" id="precos">
+  <div class="sec-tag">04 — Preços</div>
+  <h2 class="sec-title">INVESTIMENTO <span class="dim">TRANSPARENTE</span></h2>
+  <div class="pricing-grid">
+    <div class="plan glow-effect">
+      <div class="plan-name">Presença Digital</div>
+      <div class="plan-price"><span class="currency">R$</span>1.200</div>
+      <div class="plan-period">pagamento único · parcelável 12x</div>
+      <div class="plan-desc">Para quem precisa de presença online profissional com rapidez e qualidade.</div>
+      <ul class="plan-features">
+        <li class="plan-feature">Landing page até 5 seções</li>
+        <li class="plan-feature">Formulário + WhatsApp</li>
+        <li class="plan-feature">SEO básico</li>
+        <li class="plan-feature">Domínio + hospedagem (1 ano)</li>
+        <li class="plan-feature">Entrega em 7 dias</li>
+      </ul>
+      <a href="#contato" class="btn-plan outline text-center">Quero esse →</a>
+    </div>
+    <div class="plan featured glow-effect">
+      <div class="plan-badge">Mais popular</div>
+      <div class="plan-name">Negócio Online</div>
+      <div class="plan-price"><span class="currency">R$</span>2.800</div>
+      <div class="plan-period">pagamento único · parcelável 12x</div>
+      <div class="plan-desc">Para quem quer vender, agendar e crescer com uma solução completa e profissional.</div>
+      <ul class="plan-features">
+        <li class="plan-feature">Site completo até 8 páginas</li>
+        <li class="plan-feature">Loja ou sistema de agendamento</li>
+        <li class="plan-feature">Painel administrativo</li>
+        <li class="plan-feature">Integração pagamento (Pix/cartão)</li>
+        <li class="plan-feature">SEO avançado + Analytics</li>
+        <li class="plan-feature">30 dias suporte incluso</li>
+      </ul>
+      <a href="#contato" class="btn-plan solid text-center">Quero esse →</a>
+    </div>
+    <div class="plan glow-effect">
+      <div class="plan-name">Sistema Completo</div>
+      <div class="plan-price plan-price-sm">Sob consulta</div>
+      <div class="plan-period">projetos a partir de R$5.000</div>
+      <div class="plan-desc">Para negócios que precisam de automação, integrações complexas e sistemas customizados.</div>
+      <ul class="plan-features">
+        <li class="plan-feature">Sistema personalizado</li>
+        <li class="plan-feature">Integrações de APIs externas</li>
+        <li class="plan-feature">Automações de processo</li>
+        <li class="plan-feature">Múltiplos usuários e permissões</li>
+        <li class="plan-feature">Suporte contínuo mensal</li>
+      </ul>
+      <a href="#contato" class="btn-plan outline text-center">Falar sobre projeto →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section reveal">
+  <div class="sec-tag">05 — Depoimentos</div>
+  <h2 class="sec-title">O QUE <span class="dim">DIZEM</span></h2>
+  <div class="testi-grid">
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Em menos de 3 semanas estava com o site no ar e os pedidos online chegando. Transformou completamente o meu negócio."</p>
+      <div class="testi-author">
+        <div class="testi-av bg-green">MA</div>
+        <div><div class="testi-name">Márcia Alves</div><div class="testi-biz">Bistrô Verde · São Paulo</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Finalmente os clientes agendam sozinhos. Não fico mais no telefone o dia todo. O resultado foi imediato e surpreendente."</p>
+      <div class="testi-author">
+        <div class="testi-av bg-accent">RC</div>
+        <div><div class="testi-name">Rodrigo Costa</div><div class="testi-biz">Studio Beleza · Rio de Janeiro</div></div>
+      </div>
+    </div>
+    <div class="testi">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Profissional sério, entregou antes do prazo e o retorno veio rápido. Triplicamos os leads em dois meses. Recomendo muito."</p>
+      <div class="testi-author">
+        <div class="testi-av bg-gold">PS</div>
+        <div><div class="testi-name">Paula Santos</div><div class="testi-biz">ImóvelFácil · Belo Horizonte</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section reveal bg-surface">
+  <div class="sec-tag">06 — Perguntas</div>
+  <h2 class="sec-title">DÚVIDAS <span class="dim">FREQUENTES</span></h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-q">Quanto tempo demora para ter meu site no ar? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Depende do projeto. Sites simples (landing pages) ficam prontos em 5 a 7 dias úteis. Sites completos levam de 10 a 20 dias. Sistemas mais complexos podem levar de 30 a 60 dias. Sempre informo o prazo exato antes de começar.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Preciso entender de tecnologia para contratar? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Não. Meu trabalho é justamente traduzir a sua necessidade em solução digital. Você me fala o que quer e o que precisa resolver — eu cuido do resto. O treinamento para usar o site também está incluso.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">Como funciona o pagamento? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">50% na aprovação do projeto e 50% na entrega. Aceito Pix, transferência bancária e cartão de crédito em até 12x. Nunca peço o pagamento total antes de entregar.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q">E depois que o site ficar pronto, o que acontece? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Todo projeto inclui 30 dias de suporte gratuito para ajustes e dúvidas. Depois desse período, ofereço planos de manutenção mensais acessíveis. Você nunca fica sem suporte.</div></div>
+    </div>
+    <div class="faq-item" style="border-bottom:none;">
+      <button class="faq-q">Você atende negócios de qual segmento? <span class="faq-icon">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">Especializo em pequenos negócios: restaurantes, salões, clínicas, imobiliárias, lojas físicas, prestadores de serviço, profissionais liberais e muito mais. Se você tem um negócio e quer crescer online, podemos conversar.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / LEAD FORM -->
+<section class="cta-section" id="contato">
+  <div class="cta-bg-text">VAMOS?</div>
+  <div class="cta-inner lead-section-inner">
+    <div class="sec-tag">07 — Contato</div>
+    <h2 class="cta-title lead-title">PRONTO PARA<br>CRESCER <span class="accent">ONLINE?</span></h2>
+    <p class="cta-sub lead-sub">Preencha o formulário abaixo para me contar um pouco sobre o seu negócio. Entrarei em contato pelo WhatsApp em até 2 horas úteis.</p>
+
+    <form id="lead-form" class="lead-form">
+      <div class="form-group">
+        <label for="nome">Como você se chama?</label>
+        <input type="text" id="nome" name="nome" placeholder="Seu nome" required>
+      </div>
+      <div class="form-group">
+        <label for="whatsapp">Seu melhor WhatsApp</label>
+        <input type="tel" id="whatsapp" name="whatsapp" placeholder="(00) 00000-0000" required>
+      </div>
+      <div class="form-group">
+        <label for="negocio">Qual é o seu negócio?</label>
+        <input type="text" id="negocio" name="negocio" placeholder="Ex: Restaurante, Barbearia, Loja de Roupas..." required>
+      </div>
+      <div class="form-group">
+        <label for="orcamento">Orçamento estimado para o projeto</label>
+        <select id="orcamento" name="orcamento" required>
+          <option value="" disabled selected>Selecione uma opção</option>
+          <option value="Menos de R$ 1.500">Menos de R$ 1.500</option>
+          <option value="R$ 1.500 a R$ 3.000">R$ 1.500 a R$ 3.000</option>
+          <option value="R$ 3.000 a R$ 5.000">R$ 3.000 a R$ 5.000</option>
+          <option value="Mais de R$ 5.000">Mais de R$ 5.000</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-main w-full justify-center" style="font-size: 1rem; padding: 1.2rem;">Solicitar Orçamento →</button>
+    </form>
+
+    <div class="cta-contact lead-contact">
+      <div class="contact-item"><div class="contact-dot"></div>(61) 99286-6000</div>
+      <div class="contact-item"><div class="contact-dot"></div>pleitecampos@gmail.com</div>
+      <div class="contact-item"><div class="contact-dot"></div>Atendo em todo o Brasil</div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/5561992866000" target="_blank" rel="noopener noreferrer" class="float-wpp" aria-label="Falar no WhatsApp">
+  <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.57 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+</a>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">DEV<span>.</span>STUDIO</div>
+  <div class="footer-copy">© 2025 — feito com precisão para pequenos negócios</div>
+</footer>
+
+</body>
+</html>
