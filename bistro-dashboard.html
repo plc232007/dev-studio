@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bistrô Verde — Painel</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #E85C1A;
+    --orange-dim: rgba(232, 92, 26, 0.12);
+    --orange-glow: rgba(232, 92, 26, 0.06);
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1a1a1a;
+    --border: #242424;
+    --text: #f0f0f0;
+    --muted: #666;
+    --sidebar-w: 220px;
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: var(--sidebar-w);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 100vh;
+  }
+
+  .logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: var(--orange);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .logo-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.08em;
+    color: var(--text);
+  }
+
+  .nav {
+    padding: 20px 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .nav-label {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 12px 12px 6px;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 400;
+    transition: all 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+
+  .nav-item.active {
+    background: var(--orange-dim);
+    color: var(--orange);
+    font-weight: 500;
+  }
+
+  .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--orange);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+    line-height: 1.4;
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+  }
+
+  .user-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    background: var(--surface2);
+  }
+
+  .avatar {
+    width: 32px; height: 32px;
+    background: var(--orange);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 500; font-size: 12px;
+    flex-shrink: 0;
+  }
+
+  .user-info p:first-child { font-size: 12px; font-weight: 500; }
+  .user-info p:last-child { font-size: 11px; color: var(--muted); }
+
+  /* MAIN */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  .topbar {
+    height: 60px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 28px;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+
+  .page-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.06em;
+    flex: 1;
+  }
+
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
+
+  .btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+
+  .btn-ghost {
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover { color: var(--text); border-color: #333; }
+
+  .btn-primary {
+    background: var(--orange);
+    color: #fff;
+  }
+
+  .btn-primary:hover { background: #ff6b24; }
+
+  .status-dot {
+    width: 8px; height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .content::-webkit-scrollbar { width: 4px; }
+  .content::-webkit-scrollbar-track { background: transparent; }
+  .content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0;
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.15s;
+  }
+
+  .tab-btn:hover { color: var(--text); }
+
+  .tab-btn.active {
+    color: var(--orange);
+    border-bottom-color: var(--orange);
+    font-weight: 500;
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: flex; flex-direction: column; gap: 24px; }
+
+  /* METRICS */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--orange);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .metric-card:hover::before { opacity: 1; }
+
+  .metric-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .metric-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    color: var(--orange);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .metric-change {
+    font-size: 11px;
+    color: #22c55e;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .metric-change.down { color: #ef4444; }
+
+  /* CHART */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+  }
+
+  .chart-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .chart-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+  }
+
+  .chart-subtitle { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .chart-filters { display: flex; gap: 4px; }
+
+  .filter-btn {
+    padding: 6px 12px;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .filter-btn.active {
+    background: var(--orange-dim);
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  .chart-wrap { position: relative; height: 260px; }
+
+  /* ORDERS TABLE */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .table-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .table-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    letter-spacing: 0.06em;
+  }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead th {
+    padding: 12px 24px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: var(--surface2); }
+
+  td { padding: 14px 24px; font-size: 13px; }
+
+  .order-id { color: var(--orange); font-weight: 500; font-family: monospace; font-size: 12px; }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .status-dot-sm { width: 5px; height: 5px; border-radius: 50%; }
+
+  .status.novo { background: var(--orange-dim); color: var(--orange); }
+  .status.novo .status-dot-sm { background: var(--orange); }
+  .status.entregue { background: rgba(34,197,94,0.1); color: #22c55e; }
+  .status.entregue .status-dot-sm { background: #22c55e; }
+  .status.preparo { background: rgba(234,179,8,0.1); color: #eab308; }
+  .status.preparo .status-dot-sm { background: #eab308; }
+
+  /* CARDÁPIO */
+  .cardapio-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .cardapio-cats {
+    display: flex;
+    gap: 8px;
+  }
+
+  .cat-btn {
+    padding: 8px 18px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .cat-btn:hover { color: var(--text); }
+  .cat-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; }
+
+  .search-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    width: 220px;
+    outline: none;
+  }
+
+  .search-input::placeholder { color: var(--muted); }
+  .search-input:focus { border-color: var(--orange); }
+
+  .food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+
+  .food-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .food-card:hover {
+    border-color: var(--orange);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(232,92,26,0.12);
+  }
+
+  .food-img {
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    width: 100%;
+    background: var(--surface2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .food-img-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .food-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: var(--orange);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  .food-info { padding: 14px 16px; }
+
+  .food-name { font-weight: 500; font-size: 14px; margin-bottom: 4px; }
+  .food-desc { font-size: 12px; color: var(--muted); line-height: 1.5; margin-bottom: 14px; }
+
+  .food-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .food-price {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--orange);
+    letter-spacing: 0.04em;
+  }
+
+  .add-btn {
+    width: 32px; height: 32px;
+    background: var(--orange);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    line-height: 1;
+  }
+
+  .add-btn:hover { background: #ff6b24; transform: scale(1.1); }
+
+  .food-stars {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+
+  .star { color: var(--orange); font-size: 11px; }
+  .star.empty { color: var(--border); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--surface);
+    border: 1px solid var(--orange);
+    border-radius: 10px;
+    padding: 14px 20px;
+    font-size: 13px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s;
+    z-index: 100;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { color: var(--orange); font-size: 18px; }
+
+  /* Animations */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .metric-card, .chart-card, .table-card {
+    animation: fadeIn 0.4s ease both;
+  }
+
+  .metric-card:nth-child(1) { animation-delay: 0.05s; }
+  .metric-card:nth-child(2) { animation-delay: 0.1s; }
+  .metric-card:nth-child(3) { animation-delay: 0.15s; }
+  .metric-card:nth-child(4) { animation-delay: 0.2s; }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-mark">
+      <div class="logo-icon">🍃</div>
+      <span class="logo-text">Bistrô Verde</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <span class="nav-label">Principal</span>
+
+    <button class="nav-item active" onclick="setNav(this, 'painel')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Painel
+    </button>
+
+    <button class="nav-item" onclick="setNav(this, 'cardapio')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+      Cardápio
+      <span class="nav-badge">24</span>
+    </button>
+
+    <button class="nav-item" onclick="setNav(this, 'painel')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+      Pedidos
+      <span class="nav-badge">7</span>
+    </button>
+
+    <button class="nav-item" onclick="setNav(this, 'painel')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v4H3zM3 10h18v4H3zM3 17h18v4H3z"/></svg>
+      Relatórios
+    </button>
+
+    <span class="nav-label">Configurações</span>
+
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93A10 10 0 003 12h1M12 2v1M12 21v1M4.93 19.07l.7-.7M18.36 5.64l.71-.71M2 12h1M21 12h1M4.93 4.93l.7.7M18.36 18.36l.71.71"/></svg>
+      Integrações
+    </button>
+
+    <button class="nav-item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      Configurações
+    </button>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="user-card">
+      <div class="avatar">BV</div>
+      <div class="user-info">
+        <p>Admin</p>
+        <p>Gerente Geral</p>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main class="main">
+  <header class="topbar">
+    <span class="page-title" id="page-title">Painel de Relatórios</span>
+    <div class="topbar-actions">
+      <div class="status-dot" title="Sistema online"></div>
+      <button class="btn btn-ghost">Exportar</button>
+      <button class="btn btn-primary">+ Novo Pedido</button>
+    </div>
+  </header>
+
+  <div class="content">
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('painel', this)">Visão Geral</button>
+      <button class="tab-btn" onclick="switchTab('cardapio', this)">Cardápio Digital</button>
+    </div>
+
+    <!-- TAB PAINEL -->
+    <div class="tab-content active" id="tab-painel">
+
+      <!-- Metrics -->
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="metric-label">Faturamento Hoje</div>
+          <div class="metric-value">R$4.2K</div>
+          <div class="metric-change">▲ +23% vs ontem</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Pedidos no Mês</div>
+          <div class="metric-value">1.847</div>
+          <div class="metric-change">▲ +210% em 60 dias</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Ticket Médio</div>
+          <div class="metric-value">R$38</div>
+          <div class="metric-change">▲ +8% vs mês anterior</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Avaliação Média</div>
+          <div class="metric-value">4.8★</div>
+          <div class="metric-change">▲ +0.3 este mês</div>
+        </div>
+      </div>
+
+      <!-- Chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Faturamento Mensal</div>
+            <div class="chart-subtitle">Receita total por semana — 2024</div>
+          </div>
+          <div class="chart-filters">
+            <button class="filter-btn" onclick="setFilter(this, '7d')">7d</button>
+            <button class="filter-btn active" onclick="setFilter(this, '30d')">30d</button>
+            <button class="filter-btn" onclick="setFilter(this, '90d')">90d</button>
+          </div>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="revenueChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Orders table -->
+      <div class="table-card">
+        <div class="table-header">
+          <span class="table-title">Pedidos Recentes</span>
+          <button class="btn btn-ghost" style="font-size:11px; padding:6px 12px;">Ver todos →</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Pedido</th>
+              <th>Cliente</th>
+              <th>Itens</th>
+              <th>Valor</th>
+              <th>Canal</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="order-id">#4521</span></td>
+              <td>Maria Souza</td>
+              <td>Marmita Exec. x2, Suco x2</td>
+              <td>R$ 69,80</td>
+              <td>iFood</td>
+              <td><span class="status novo"><span class="status-dot-sm"></span>Novo</span></td>
+            </tr>
+            <tr>
+              <td><span class="order-id">#4520</span></td>
+              <td>João Pereira</td>
+              <td>Prato do Dia x1, Água x1</td>
+              <td>R$ 38,90</td>
+              <td>Site</td>
+              <td><span class="status preparo"><span class="status-dot-sm"></span>Preparo</span></td>
+            </tr>
+            <tr>
+              <td><span class="order-id">#4519</span></td>
+              <td>Ana Lima</td>
+              <td>Combo Família x1</td>
+              <td>R$ 124,00</td>
+              <td>WhatsApp</td>
+              <td><span class="status entregue"><span class="status-dot-sm"></span>Entregue</span></td>
+            </tr>
+            <tr>
+              <td><span class="order-id">#4518</span></td>
+              <td>Carlos Nunes</td>
+              <td>Hambúrguer Artesanal x3</td>
+              <td>R$ 89,70</td>
+              <td>iFood</td>
+              <td><span class="status entregue"><span class="status-dot-sm"></span>Entregue</span></td>
+            </tr>
+            <tr>
+              <td><span class="order-id">#4517</span></td>
+              <td>Fernanda Costa</td>
+              <td>Salada Caesar x1, Suco x1</td>
+              <td>R$ 42,80</td>
+              <td>Site</td>
+              <td><span class="status novo"><span class="status-dot-sm"></span>Novo</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB CARDÁPIO -->
+    <div class="tab-content" id="tab-cardapio">
+      <div class="cardapio-header">
+        <div class="cardapio-cats">
+          <button class="cat-btn active" onclick="filterCat(this, 'all')">Todos</button>
+          <button class="cat-btn" onclick="filterCat(this, 'entradas')">Entradas</button>
+          <button class="cat-btn" onclick="filterCat(this, 'pratos')">Pratos</button>
+          <button class="cat-btn" onclick="filterCat(this, 'bebidas')">Bebidas</button>
+          <button class="cat-btn" onclick="filterCat(this, 'sobremesas')">Sobremesas</button>
+        </div>
+        <input class="search-input" type="text" placeholder="🔍  Buscar no cardápio..." oninput="searchFood(this.value)">
+      </div>
+
+      <div class="food-grid" id="food-grid">
+        <!-- Cards rendered by JS -->
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="toast" id="toast">
+  <span class="toast-icon">✓</span>
+  <span id="toast-msg">Item adicionado ao pedido!</span>
+</div>
+
+<script>
+// CHART
+const ctx = document.getElementById('revenueChart').getContext('2d');
+
+const datasets30d = [680,820,750,1100,980,1300,1150,1600,1450,1900,1750,2100,1980,2400,2200,2600,2450,2900,2700,3100,2950,3400,3200,3600,3450,3800,3600,4000,3850,4200];
+const datasets7d  = [3100,3450,3200,3800,3600,4000,4200];
+const datasets90d = [400,520,480,600,700,750,820,900,870,980,1050,1100,1200,1150,1300,1400,1380,1500,1600,1580,1700,1800,1760,1900,2000,1980,2100,2200,2180,2300,2400,2380,2500,2600,2580,2700,2800,2780,2900,3000,2980,3100,3200,3180,3300,3400,3380,3500,3600,3580,3700,3800,3780,3900,4000,3980,4100,4200,4180,4300,4400,4380,4500,4600,4580,4700,4800,4780,4900,5000,4980,5100,5200,5180,5300,5400,5380,5500,5600,5580,5700,5800,5780,5900,6000,5980,6100,6200];
+
+function makeLabels(n) {
+  const today = new Date();
+  return Array.from({length: n}, (_, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() - (n - 1 - i));
+    return d.toLocaleDateString('pt-BR', {day: '2-digit', month: '2-digit'});
+  });
+}
+
+const gradient = ctx.createLinearGradient(0, 0, 0, 260);
+gradient.addColorStop(0, 'rgba(232,92,26,0.3)');
+gradient.addColorStop(1, 'rgba(232,92,26,0)');
+
+const chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: makeLabels(30),
+    datasets: [{
+      label: 'Faturamento (R$)',
+      data: datasets30d,
+      borderColor: '#E85C1A',
+      borderWidth: 2.5,
+      backgroundColor: gradient,
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: '#E85C1A',
+      pointHoverBorderColor: '#fff',
+      pointHoverBorderWidth: 2,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        backgroundColor: '#1a1a1a',
+        borderColor: '#E85C1A',
+        borderWidth: 1,
+        titleColor: '#E85C1A',
+        bodyColor: '#f0f0f0',
+        padding: 12,
+        callbacks: {
+          label: ctx => ' R$ ' + ctx.parsed.y.toLocaleString('pt-BR')
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { color: 'rgba(255,255,255,0.03)' },
+        ticks: { color: '#555', font: { size: 11 }, maxTicksLimit: 8 },
+        border: { color: 'transparent' }
+      },
+      y: {
+        grid: { color: 'rgba(255,255,255,0.04)' },
+        ticks: {
+          color: '#555', font: { size: 11 },
+          callback: v => 'R$' + (v/1000).toFixed(0) + 'k'
+        },
+        border: { color: 'transparent' }
+      }
+    }
+  }
+});
+
+function setFilter(btn, range) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const data = range === '7d' ? datasets7d : range === '30d' ? datasets30d : datasets90d;
+  const n = data.length;
+  chart.data.labels = makeLabels(n);
+  chart.data.datasets[0].data = data;
+  chart.update('active');
+}
+
+// NAV
+function setNav(btn, section) {
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if(section === 'cardapio') {
+    switchTabByName('cardapio');
+  } else {
+    switchTabByName('painel');
+  }
+}
+
+// TABS
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  switchTabByName(name);
+}
+
+function switchTabByName(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('page-title').textContent = name === 'painel' ? 'Painel de Relatórios' : 'Cardápio Digital';
+}
+
+// FOOD DATA
+const foods = [
+  { id:1, name:'Hambúrguer Artesanal', desc:'Blend de carne, queijo gouda, alface, tomate e molho especial.', price:'R$ 34,90', cat:'pratos', stars:5, badge:'Popular', emoji:'🍔', color:'#3a2010' },
+  { id:2, name:'Marmita Executiva', desc:'Proteína + 2 guarnições + salada + suco da fruta.', price:'R$ 28,90', cat:'pratos', stars:5, badge:'Destaque', emoji:'🥘', color:'#1a2a10' },
+  { id:3, name:'Salada Caesar', desc:'Alface romana, croutons, parmesão e molho caesar artesanal.', price:'R$ 24,90', cat:'entradas', stars:4, badge:null, emoji:'🥗', color:'#0a1a10' },
+  { id:4, name:'Suco de Laranja', desc:'Laranja natural espremida na hora, sem adição de açúcar.', price:'R$ 12,90', cat:'bebidas', stars:5, badge:null, emoji:'🍊', color:'#2a1a00' },
+  { id:5, name:'Prato do Dia', desc:'Varia diariamente com ingredientes frescos e sazonais.', price:'R$ 32,90', cat:'pratos', stars:4, badge:'Hoje', emoji:'🍽️', color:'#1a1020' },
+  { id:6, name:'Brownie de Chocolate', desc:'Brownie artesanal com cobertura de ganache e sorvete de baunilha.', price:'R$ 18,90', cat:'sobremesas', stars:5, badge:'Novo', emoji:'🍫', color:'#1a0a00' },
+  { id:7, name:'Coxinha de Frango', desc:'Massa crocante recheada com frango desfiado e catupiry.', price:'R$ 9,90', cat:'entradas', stars:4, badge:null, emoji:'🍗', color:'#2a1800' },
+  { id:8, name:'Combo Família', desc:'2 pratos + 2 acompanhamentos + 2 bebidas + sobremesa.', price:'R$ 89,90', cat:'pratos', stars:5, badge:'Oferta', emoji:'👨‍👩‍👧', color:'#0a1a2a' },
+  { id:9, name:'Açaí 500ml', desc:'Açaí batido com banana, granola e leite condensado.', price:'R$ 22,90', cat:'sobremesas', stars:5, badge:null, emoji:'🫐', color:'#1a0a2a' },
+  { id:10, name:'Água Mineral', desc:'Água mineral sem gás gelada, 500ml.', price:'R$ 5,90', cat:'bebidas', stars:3, badge:null, emoji:'💧', color:'#0a1020' },
+  { id:11, name:'Pão de Queijo', desc:'3 unidades de pão de queijo mineiro assado na hora.', price:'R$ 11,90', cat:'entradas', stars:5, badge:'Popular', emoji:'🧀', color:'#2a1a00' },
+  { id:12, name:'Torta de Limão', desc:'Torta cremosa de limão siciliano com base de biscoito.', price:'R$ 16,90', cat:'sobremesas', stars:4, badge:null, emoji:'🍋', color:'#1a2a00' },
+];
+
+let currentCat = 'all';
+let currentSearch = '';
+
+function renderFoods() {
+  const grid = document.getElementById('food-grid');
+  const filtered = foods.filter(f => {
+    const matchCat = currentCat === 'all' || f.cat === currentCat;
+    const matchSearch = f.name.toLowerCase().includes(currentSearch.toLowerCase()) || f.desc.toLowerCase().includes(currentSearch.toLowerCase());
+    return matchCat && matchSearch;
+  });
+
+  grid.innerHTML = filtered.map(f => `
+    <div class="food-card" data-cat="${f.cat}">
+      <div class="food-img" style="background:${f.color};">
+        <span style="font-size:52px; filter:drop-shadow(0 2px 8px rgba(0,0,0,0.5))">${f.emoji}</span>
+        ${f.badge ? `<div class="food-badge">${f.badge}</div>` : ''}
+      </div>
+      <div class="food-info">
+        <div class="food-stars">${'★'.repeat(f.stars)}${'★'.repeat(5-f.stars).replace(/★/g,'<span class="star empty">★</span>').replace(/(<span[^>]*>★<\/span>)+/g, m => m)}</div>
+        <div class="food-name">${f.name}</div>
+        <div class="food-desc">${f.desc}</div>
+        <div class="food-footer">
+          <span class="food-price">${f.price}</span>
+          <button class="add-btn" onclick="addToOrder('${f.name}')">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.food-card .food-stars').forEach((el, i) => {
+    el.innerHTML = Array.from({length:5}, (_,j) =>
+      `<span class="star${j >= filtered[i].stars ? ' empty' : ''}">★</span>`
+    ).join('');
+  });
+}
+
+function filterCat(btn, cat) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat = cat;
+  renderFoods();
+}
+
+function searchFood(val) {
+  currentSearch = val;
+  renderFoods();
+}
+
+let toastTimer;
+function addToOrder(name) {
+  document.getElementById('toast-msg').textContent = `"${name}" adicionado ao pedido!`;
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+renderFoods();
+</script>
+</body>
+</html>
